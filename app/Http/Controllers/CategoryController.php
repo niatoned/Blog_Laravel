@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -14,8 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::get();
-        return view('category.index',['categories'=>$categories]);
+        $categories = Category::all();
+        return view('categories.index',['categories'=>$categories]);
     }
 
     /**
@@ -25,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -36,7 +37,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        Category::query()->create([
+            'name' => $request->input('name'),
+            'slug' => Str::slug($request->input('name'))
+        ]);
+
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -58,7 +68,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('categories.edit',compact('category'));
     }
 
     /**
@@ -70,7 +80,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->update(['name' => $request->input('name')]);
+
+        session()->flash('success', "Category updated successfully");
+
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -81,6 +95,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        session()->flash('success', "Category deleted successfully");
+
+        return redirect()->route('categories.index');
     }
 }

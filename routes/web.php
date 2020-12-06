@@ -21,5 +21,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-//Route::prefix('admin')->middleware('admin')->resource('categories',CategoryController::class);
+Route::prefix('admin')->middleware(\App\Http\Middleware\IsAdmin::class)->group(function (){
+    Route::resource('categories','CategoryController');
+    Route::resource('posts','PostController');
+    Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 
+});

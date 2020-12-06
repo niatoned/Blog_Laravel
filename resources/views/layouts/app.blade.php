@@ -55,11 +55,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-{{--                                    @if(Auth::user()->isAdmin())--}}
-{{--                                        <a class="dropdown-item" href="{{ route('dashboard') }}" >--}}
-{{--                                            {{ __('Administration') }}--}}
-{{--                                        </a>--}}
-{{--                                    @endif--}}
+                                    @if(Auth::user()->isAdmin())
+                                        <a class="dropdown-item" href="{{ route('dashboard') }}" >
+                                            {{ __('Administration') }}
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
